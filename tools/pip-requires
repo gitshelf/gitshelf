@@ -1,0 +1,3 @@
+cliff>=1.2.1
+PyYAML
+sh

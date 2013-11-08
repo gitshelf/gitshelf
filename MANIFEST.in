@@ -1,0 +1,10 @@
+include AUTHORS
+include ChangeLog
+include gitshelf/versioninfo
+include *.txt *.ini *.cfg *.rst *.md
+
+exclude .gitignore
+exclude .gitreview
+exclude *.sublime-project
+
+global-exclude *.pyc
