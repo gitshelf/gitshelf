@@ -1,0 +1,19 @@
+# a collection of git repos (books, that fill your shelf) that we don't want to treat as submodules.
+# book "path/to/drop/in/to", git: "git-url", branch: "some-branch-or-tag-name"
+
+books:
+  - book: "srv/salt/state/base"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/state-base"
+  - book: "srv/salt/state/dbaas_state_env"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/dbaas_state_env"
+  - book: "srv/salt/state/beaver-formula"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-share/salt/beaver-formula.git"
+  - book: "srv/salt/state/logstash-formula"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-share/salt/logstash-formula.git"
+  - book: "srv/salt/state/elasticsearch-formula"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-share/salt/elasticsearch-formula.git"
+    #
+    # Pillars, which may need specific branches
+  - book: "srv/salt/pillar/base"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/pillar-base"
+    branch: "ae1az1"

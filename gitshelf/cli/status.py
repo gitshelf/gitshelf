@@ -14,12 +14,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 import logging
-from gitshelf.cli import base
+from cliff.command import Command
 
 LOG = logging.getLogger(__name__)
 
 
-class GitShelfStatusCommand(base.Command):
+class GitShelfStatusCommand(Command):
     """ Install a set of repos."""
 
     def get_parser(self, prog_name):
