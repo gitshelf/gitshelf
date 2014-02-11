@@ -14,23 +14,44 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 import logging
-from cliff.command import Command
+import os
+from sh import git
+from gitshelf.cli import BaseCommand
 
 LOG = logging.getLogger(__name__)
 
 
-class GitShelfStatusCommand(Command):
+class GitShelfStatusCommand(BaseCommand):
     """ Install a set of repos."""
 
-    def get_parser(self, prog_name):
-        parser = super(GitShelfStatusCommand, self).get_parser(prog_name)
-
-        # parser.add_argument('--skip-deletes', help="skip and group/rule deletes", action="store_true")
-
-        return parser
-
     def execute(self, parsed_args):
+        LOG.debug(parsed_args.__dict__)
         config = self._parse_configuration(parsed_args)
 
-        LOG.info('TODO')
-        LOG.warn('TODO MOFO')
+        # iterate over the config, doing things
+        books = config['books']
+        LOG.debug(books)
+        for book in books:
+            LOG.debug(book)
+            if 'branch' not in book:
+                book['branch'] = 'master'
+
+            book_path = book['book']
+            if parsed_args.fakeroot:
+                fakeroot = parsed_args.fakeroot[0]
+                LOG.debug('fakepath set, prepending {0} to {1}'.format(fakeroot, book['book']))
+                book_path = os.path.join(fakeroot, os.path.relpath(book_path, os.sep))
+                LOG.debug('book_path is now {0}'.format(book_path))
+
+            if not os.path.exists(book_path):
+                LOG.info("ERROR book {0} from {1}, branch: {2} doesn't exist.".format(book_path,
+                                                                          book['git'],
+                                                                          book['branch']))
+            else:
+                # chdir to the book & run `git status`
+                cwd = os.getcwd()
+                os.chdir(book_path)
+                LOG.info("# book {0}".format(book_path))
+                LOG.info(git.status())
+                os.chdir(cwd)
+

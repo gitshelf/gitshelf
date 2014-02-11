@@ -16,20 +16,23 @@
 from cliff.app import App
 from cliff.commandmanager import CommandManager
 from gitshelf.version import version_info as version
+import logging
 
 
 class GitShelfShell(App):
     """Parent class for the 2 sub-commands."""
+    log = logging.getLogger(__name__)
 
     def __init__(self):
         super(GitShelfShell, self).__init__(
-            description='GitShelf',
+            description='Manage a collection of git repos without using submodules',
             version=version.canonical_version_string(),
             command_manager=CommandManager('gitshelf.cli'),
         )
 
+        self.log = logging.getLogger(__name__)
+
     def build_option_parser(self, description, version):
-        parser = super(GitShelfShell, self).build_option_parser(
-            description, version)
+        parser = super(GitShelfShell, self).build_option_parser(description, version)
 
         return parser

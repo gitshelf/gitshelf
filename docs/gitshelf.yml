@@ -14,6 +14,6 @@ books:
     git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-share/salt/elasticsearch-formula.git"
     #
     # Pillars, which may need specific branches
-  - book: "srv/salt/pillar/base"
+  - book: "/srv/salt/pillar/base"
     git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/pillar-base"
     branch: "ae1az1"
