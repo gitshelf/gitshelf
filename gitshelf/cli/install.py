@@ -16,6 +16,7 @@
 import logging
 import yaml
 import os
+import errno
 from sh import git
 from gitshelf.cli import BaseCommand
 
@@ -46,23 +47,54 @@ class GitShelfInstallCommand(BaseCommand):
                 book_path = os.path.join(fakeroot, book_path.lstrip(os.sep))
                 LOG.debug('book_path is now {0}'.format(book_path))
 
-            if not os.path.exists(book_path):
-                LOG.info("Creating book {0} from {1}, branch: {2}".format(book_path,
-                                                                          book['git'],
-                                                                          book['branch']))
-                git.clone(book['git'], book_path)
+            if 'git' in book:
+                self._book_git(book_path, book)
+            elif 'link' in book:
+                self._book_link(book_path, book)
             else:
-                LOG.info("Book {0} already exists".format(book_path))
+                LOG.error('book {0} is of unknown type: {1}'.format(book['book'], book))
 
-            cwd = os.getcwd()
-            os.chdir(book_path)
-            cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
-            LOG.warn("Book {0}'s current branch is {1}".format(book_path, cb))
+    def _book_git(self, book_path, book):
+        """create a book from a git repo"""
 
-            if cb != book['branch']:
-                LOG.info("Switching {0} from {1} to branch {2}".format(book_path,
-                                                                       cb,
-                                                                       book['branch']))
-                git.checkout(book['branch'])
+        if not os.path.exists(book_path):
+            LOG.info("Creating book {0} from {1}, branch: {2}".format(book_path,
+                                                                      book['git'],
+                                                                      book['branch']))
+            git.clone(book['git'], book_path)
+        else:
+            LOG.info("Book {0} already exists".format(book_path))
 
-            os.chdir(cwd)
+        cwd = os.getcwd()
+        os.chdir(book_path)
+        cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
+        LOG.warn("Book {0}'s current branch is {1}".format(book_path, cb))
+
+        if cb != book['branch']:
+            LOG.info("Switching {0} from {1} to branch {2}".format(book_path,
+                                                                   cb,
+                                                                   book['branch']))
+            git.checkout(book['branch'])
+
+        os.chdir(cwd)
+
+    def _book_link(self, book_path, book):
+        """create a book from a link to somewhere else"""
+
+        if not os.path.islink(book_path):
+            LOG.info("Creating book {0} via a link to {1}".format(book_path, book['link']))
+            # create the parent directory, if required
+            self._mkdir_p(os.path.dirname(book_path.rstrip(os.sep)))
+            # create the symlink
+            os.symlink(book['link'], book_path)
+        else:
+            LOG.info("Book {0} already exists, target: {1}".format(book_path, os.readlink(book_path)))
+
+
+    def _mkdir_p(self, path):
+        try:
+            os.makedirs(path)
+        except OSError as exc: # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else: raise
