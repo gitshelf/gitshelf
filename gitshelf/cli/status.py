@@ -40,7 +40,8 @@ class GitShelfStatusCommand(BaseCommand):
             if parsed_args.fakeroot:
                 fakeroot = parsed_args.fakeroot[0]
                 LOG.debug('fakepath set, prepending {0} to {1}'.format(fakeroot, book['book']))
-                book_path = os.path.join(fakeroot, os.path.relpath(book_path, os.sep))
+                # need to strip any leading os.sep
+                book_path = os.path.join(fakeroot, book_path.lstrip(os.sep))
                 LOG.debug('book_path is now {0}'.format(book_path))
 
             if not os.path.exists(book_path):
