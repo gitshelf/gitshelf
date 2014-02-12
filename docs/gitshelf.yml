@@ -17,3 +17,5 @@ books:
   - book: "/srv/salt/pillar/base"
     git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/pillar-base"
     branch: "ae1az1"
+  - book: "srv/salt/pillar/env/someplace"
+    link: "../../base"

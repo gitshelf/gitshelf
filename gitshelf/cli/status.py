@@ -44,15 +44,17 @@ class GitShelfStatusCommand(BaseCommand):
                 book_path = os.path.join(fakeroot, book_path.lstrip(os.sep))
                 LOG.debug('book_path is now {0}'.format(book_path))
 
-            if not os.path.exists(book_path):
-                LOG.info("ERROR book {0} from {1}, branch: {2} doesn't exist.".format(book_path,
-                                                                          book['git'],
-                                                                          book['branch']))
+            if 'git' in book:
+                if not os.path.exists(book_path):
+                    LOG.info("ERROR book {0} from {1}, branch: {2} doesn't exist.".format(book_path,
+                                                                              book['git'],
+                                                                              book['branch']))
+                else:
+                    # chdir to the book & run `git status`
+                    cwd = os.getcwd()
+                    os.chdir(book_path)
+                    LOG.info("# book {0}".format(book_path))
+                    LOG.info(git.status())
+                    os.chdir(cwd)
             else:
-                # chdir to the book & run `git status`
-                cwd = os.getcwd()
-                os.chdir(book_path)
-                LOG.info("# book {0}".format(book_path))
-                LOG.info(git.status())
-                os.chdir(cwd)
-
+                LOG.error('Unknown book type: {0}'.format(book))
