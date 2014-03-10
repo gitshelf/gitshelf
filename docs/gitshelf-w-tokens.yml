@@ -1,0 +1,34 @@
+# a collection of git repos (books, that fill your shelf) that we don't want to treat as submodules.
+# book "path/to/drop/in/to", git: "git-url", branch: "some-branch-or-tag-name"
+
+defaults:
+  environment: dev
+
+environments:
+  aw2:
+    description: "PaaS Core AW2 deploy kit, things that need to be tweaked for each environment"
+    tokens:
+      giturlbase: "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/"
+  dev:
+    description: "PaaS Core AW2 deploy kit, things that need to be tweaked for each environment"
+    tokens:
+      giturlbase: "ssh://simonm@gerrit.paas.hpcloud.net:29418/"
+
+books:
+  - book: "srv/salt/state/base"
+    git: "{giturlbase}/paas-core/salt-openstack/state-base"
+  - book: "srv/salt/state/dbaas_state_env"
+    git: "{giturlbase}/paas-core/salt-openstack/dbaas_state_env"
+  - book: "srv/salt/state/beaver-formula"
+    git: "{giturlbase}/paas-share/salt/beaver-formula.git"
+  - book: "srv/salt/state/logstash-formula"
+    git: "{giturlbase}/paas-share/salt/logstash-formula.git"
+  - book: "srv/salt/state/elasticsearch-formula"
+    git: "{giturlbase}/paas-share/salt/elasticsearch-formula.git"
+    #
+    # Pillars, which may need specific branches
+  - book: "/srv/salt/pillar/base"
+    git: "{giturlbase}/paas-core/salt-openstack/pillar-base"
+    branch: "ae1az1"
+  - book: "srv/salt/pillar/env/someplace"
+    link: "../../base"

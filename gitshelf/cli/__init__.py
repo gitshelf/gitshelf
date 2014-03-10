@@ -16,6 +16,7 @@
 import logging
 import yaml
 import os
+import re
 from sh import git
 from cliff.command import Command
 
@@ -73,8 +74,35 @@ class BaseCommand(Command):
         LOG.debug("config_file = {0}".format(config_file))
 
         with open(config_file) as fh:
-            config = yaml.load(fh)
+            config = NestedDict(yaml.load(fh))
+
+        with open(config_file) as fh:
+            config_raw = fh.read()
+
+        environment = config['defaults'].get('environment', 'dev')
+        tokens = config['environments'][environment]['tokens']
+        LOG.debug('Tokens: {0}'.format(tokens))
+
+        # expand out tokens, tokens are {} wrapped names from the environment section
+        delimiters = ('{', '}')
+
+        def _replaceToken(match):
+            # Strip the delimiter with 1:-1
+            key = match.group(0)[1:-1]
+            if key in tokens:
+                return tokens[key]    # Strip the delimiter with 1:-1
+            return ''
+
+        rendered_config = re.sub('\%s.*?\%s' % delimiters, _replaceToken, config_raw)
+
+        # reload the config block from the rendered yaml
+        config = yaml.load(rendered_config)
 
         LOG.debug(config)
 
         return config
+
+class NestedDict(dict):
+    def __getitem__(self, key):
+        if key in self: return self.get(key)
+        return self.setdefault(key, NestedDict())

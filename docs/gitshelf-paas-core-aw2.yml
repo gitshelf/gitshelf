@@ -1,0 +1,59 @@
+access:
+  - proto: ssh
+    port: 29418
+    user: simonm
+
+books:
+  - book: "/srv/salt/state/base"
+    git: "ssh://simonm@gerrit.paas.hpcloud.net:29418/paas-core/salt-openstack/state-base.git"
+    branch: "b14ad9dcf5e3843e542031af1c11e3b9e34bfeda"
+
+  - book: "/srv/salt/state/base/users"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/users.git"
+    branch: "9a65e31619cc5003a64fcff6b142736240482408"
+
+  - book: "/srv/salt/state/base/ufw"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/ufw.git"
+    branch: "f6311442d05c34c324cc7ef16e6c70f543ec5a39"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/apt"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/apt.git"
+    branch: "78c92a4ab474e498e06854056d7a846e4bb31e34"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/datadog"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/datadog.git"
+    branch: "9a58568485750788f58782e5440a264f24cf4c58"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/dbaas_networking"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/dbaas_networking.git"
+    branch: "de161512bc5dc4dea84c179fcb6cac913f62b6ea"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/icinga"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/icinga.git"
+    branch: "f4e845fbd4820ab2372dd51439e95b001c89c30e"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/logstash"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/logstash.git"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/openstack"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/openstack.git"
+    branch: "dce03e3b31d74431bf303bd49df450700963672d"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/percona_galera"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/percona_galera.git"
+    branch: "faefcfdbe3fb7a42575d36b4a348beaa0f369a33"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/salt-minion"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/salt-minion.git"
+    branch: "7c65931d1daf68fe339b30ab9d529122a4dab010"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/upstart"
+    git:  "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/upstart.git"
+    branch: "95451e2498823d371e66f296b869cc6930f061c5"
+
+
+    #
+    # Pillars, which may need specific branches
+  - book: "/srv/salt/pillar/base"
+    git: "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net/paas-core/salt-openstack/pillar-base.git"
+    branch: "master"

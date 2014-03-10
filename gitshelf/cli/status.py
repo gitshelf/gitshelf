@@ -56,5 +56,16 @@ class GitShelfStatusCommand(BaseCommand):
                     LOG.info("# book {0}".format(book_path))
                     LOG.info(git.status())
                     os.chdir(cwd)
+
+            elif 'link' in book:
+                # check the link points to the correct location
+                link_target = os.readlink(book_path)
+                LOG.debug('book: {0} should point to {1}, it points to {2}'.format(book_path, book['link'], link_target))
+                if link_target == book['link']:
+                    LOG.info('# book {0} correctly points to {1}'.format(book_path, link_target))
+                else:
+                    LOG.error('{0} should point to {1}, it points to {2}'.format(book_path, book['link'], link_target))
+
+
             else:
                 LOG.error('Unknown book type: {0}'.format(book))

@@ -45,8 +45,10 @@ $ gitshelf status
 
 ## Development
 
+pbr introduces some weirdness under virtualenv, so we use the site packages to help make
+sure pbr doesn't break everything.
 ~~~
-virtualenv .venv
+virtualenv --system-site-packages .venv
 . .venv/bin/activate
 python setup.py develop
 # hack
