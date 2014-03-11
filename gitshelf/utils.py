@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from urlparse import urlparse, parse_qsl
+from urllib import unquote_plus
 
 def get_item_properties(item, fields, mixed_case_fields=[], formatters={}):
     """Return a tuple containing the item properties.
@@ -59,3 +61,33 @@ def get_columns(data):
 
     map(lambda item: map(_seen, item.keys()), data)
     return list(columns)
+
+
+
+class Url(object):
+    '''A url object that can be compared with other url orbjects
+    without regard to the vagaries of encoding, escaping, and ordering
+    of parameters in query strings.'''
+
+    def __init__(self, url):
+        parts = urlparse(url)
+        _query = frozenset(parse_qsl(parts.query))
+        _path = unquote_plus(parts.path)
+        _path = _path.replace('//', '/')
+        parts = parts._replace(query=_query, path=_path)
+        self.parts = parts
+
+    def __eq__(self, other):
+        return self.parts == other.parts
+
+    def __hash__(self):
+        return hash(self.parts)
+
+class NestedDict(dict):
+    '''Make accessing nested dictionaries less painful, return
+    and empty dict for anything that doesn't exist.
+    Stolen from http://ohuiginn.net/mt/2010/07/nested_dictionaries_in_python.html'''
+
+    def __getitem__(self, key):
+        if key in self: return self.get(key)
+        return self.setdefault(key, NestedDict())

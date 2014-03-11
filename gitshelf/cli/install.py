@@ -19,6 +19,8 @@ import os
 import errno
 from sh import git
 from gitshelf.cli import BaseCommand
+from gitshelf.utils import Url
+
 
 LOG = logging.getLogger(__name__)
 
@@ -67,6 +69,20 @@ class GitShelfInstallCommand(BaseCommand):
 
         cwd = os.getcwd()
         os.chdir(book_path)
+        # TODO: check that the git repo points to the same URL
+        remote_match_found = False
+        for remote in git("remote", "-v"):
+            remote_parts = remote.split()
+
+            if Url(remote_parts[1]) == Url(book['git']):
+                remote_match_found = True
+
+        if remote_match_found:
+            LOG.debug('Found {0} in the list of remotes for {1}'.format(book['git'], book_path))
+        else:
+            LOG.error('ERROR: {0} wasn\'t found in the list of remotes for {1}'.format(book['git'], book_path))
+
+        # check the branch is set as we expect
         cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
         LOG.warn("Book {0}'s current branch is {1}".format(book_path, cb))
 
@@ -98,3 +114,4 @@ class GitShelfInstallCommand(BaseCommand):
             if exc.errno == errno.EEXIST and os.path.isdir(path):
                 pass
             else: raise
+

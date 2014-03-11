@@ -18,6 +18,7 @@ import yaml
 import os
 import re
 from sh import git
+from gitshelf.utils import NestedDict
 from cliff.command import Command
 
 LOG = logging.getLogger(__name__)
@@ -45,10 +46,18 @@ class BaseCommand(Command):
                             help='path to prepand to any book paths, to test shelves ' \
                                     'that are absolute without using the absolute path')
 
+        parser.add_argument('--environment',
+                            dest='environment',
+                            default=None,
+                            nargs=1,
+                            help='set the desired environment, overriding any default' \
+                                    'settings in the config file (gitshelf.yml)')
+
         parser.add_argument('--dry-run',
                             default=False,
                             help="Defaults to False",
                             action='store_true')
+
 
         return parser
 
@@ -79,7 +88,11 @@ class BaseCommand(Command):
         with open(config_file) as fh:
             config_raw = fh.read()
 
-        environment = config['defaults'].get('environment', 'dev')
+        if parsed_args.environment:
+            environment = parsed_args.environment[0]
+        else:
+            environment = config['defaults'].get('environment', 'dev')
+
         tokens = config['environments'][environment]['tokens']
         LOG.debug('Tokens: {0}'.format(tokens))
 
@@ -102,7 +115,3 @@ class BaseCommand(Command):
 
         return config
 
-class NestedDict(dict):
-    def __getitem__(self, key):
-        if key in self: return self.get(key)
-        return self.setdefault(key, NestedDict())
