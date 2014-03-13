@@ -50,13 +50,14 @@ class GitShelfInstallCommand(BaseCommand):
                 LOG.debug('book_path is now {0}'.format(book_path))
 
             if 'git' in book:
-                self._book_git(book_path, book)
+                self._book_git(book_path, book, parsed_args)
             elif 'link' in book:
-                self._book_link(book_path, book)
+                self._book_link(book_path, book, parsed_args)
             else:
                 LOG.error('book {0} is of unknown type: {1}'.format(book['book'], book))
+            LOG.info('')
 
-    def _book_git(self, book_path, book):
+    def _book_git(self, book_path, book, parsed_args):
         """create a book from a git repo"""
 
         if not os.path.exists(book_path):
@@ -69,32 +70,37 @@ class GitShelfInstallCommand(BaseCommand):
 
         cwd = os.getcwd()
         os.chdir(book_path)
-        # TODO: check that the git repo points to the same URL
-        remote_match_found = False
-        for remote in git("remote", "-v"):
-            remote_parts = remote.split()
 
-            if Url(remote_parts[1]) == Url(book['git']):
-                remote_match_found = True
+        if parsed_args.skiprepourlcheck:
+            remote_match_found = False
+            for remote in git("remote", "-v"):
+                remote_parts = remote.split()
 
-        if remote_match_found:
-            LOG.debug('Found {0} in the list of remotes for {1}'.format(book['git'], book_path))
-        else:
-            LOG.error('ERROR: {0} wasn\'t found in the list of remotes for {1}'.format(book['git'], book_path))
+                if Url(remote_parts[1]) == Url(book['git']):
+                    remote_match_found = True
+
+            if remote_match_found:
+                LOG.debug('Found {0} in the list of remotes for {1}'.format(book['git'], book_path))
+            else:
+                LOG.error('ERROR: {0} wasn\'t found in the list of remotes for {1}'.format(book['git'], book_path))
 
         # check the branch is set as we expect
-        cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
+        # cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
+        cb = git('describe', '--all', '--contains', '--abbrev=4', 'HEAD').rstrip('\r\n')
+        sha1 = git('rev-parse', 'HEAD').rstrip('\r\n')
         LOG.warn("Book {0}'s current branch is {1}".format(book_path, cb))
+        LOG.warn("Book {0}'s current sha1 is {1}".format(book_path, sha1))
 
-        if cb != book['branch']:
+        if ((cb != book['branch']) or (sha1 != book['branch'])):
             LOG.info("Switching {0} from {1} to branch {2}".format(book_path,
                                                                    cb,
                                                                    book['branch']))
+            git.fetch
             git.checkout(book['branch'])
 
         os.chdir(cwd)
 
-    def _book_link(self, book_path, book):
+    def _book_link(self, book_path, book, parsed_args):
         """create a book from a link to somewhere else"""
 
         if not os.path.islink(book_path):

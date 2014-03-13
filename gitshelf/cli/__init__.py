@@ -58,6 +58,13 @@ class BaseCommand(Command):
                             help="Defaults to False",
                             action='store_true')
 
+        parser.add_argument('--skip-repo-url-check',
+                            dest='skiprepourlcheck',
+                            default=False,
+                            help="Defaults to False" \
+                                    'Skip the repo remote host check',
+                            action='store_true')
+
 
         return parser
 
