@@ -1,0 +1,156 @@
+
+defaults:
+  environment: aw2
+
+environments:
+  aw2:
+    description: "PaaS Core AW2 deploy kit, things that need to be tweaked for each environment"
+    tokens:
+      environment: aw2
+      giturlbase: "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net"
+      giturlbase: "ssh://simonm@gerrit.paas.hpcloud.net:29418"
+  ae1:
+    description: "PaaS Core AE1 deploy kit, things that need to be tweaked for each environment"
+    tokens:
+      environment: ae1
+      giturlbase: "https://paas-core-salt-ae1@gerrit.paas.hpcloud.net"
+  dev:
+    description: "PaaS Core AW2 deploy kit, things that need to be tweaked for each environment"
+    tokens:
+      giturlbase: "ssh://simonm@gerrit.paas.hpcloud.net:29418"
+
+# file_roots:
+#   base:
+#     - /srv/salt/state/formulae
+#     - /srv/salt/state/base
+#   dbaas_ae1_az1:
+#     - /srv/salt/state/env/dbaas_ae1_az1
+#   dbaas_ae1_az2:
+#     - /srv/salt/state/env/dbaas_ae1_az2
+#   dbaas_ae1_az3:
+#     - /srv/salt/state/env/dbaas_ae1_az3
+
+books:
+#
+# /srv/salt/state/formulae
+  - book: "/srv/salt/state/formulae/beaver"
+    git: "{giturlbase}/paas-share/salt/beaver-formula"
+    branch: 'b3032ff60bbfc77472f79f621b214d0393963796'
+
+  - book: "/srv/salt/state/formulae/elasticsearch"
+    git: "{giturlbase}/paas-share/salt/elasticsearch-formula"
+    branch: '75c3fd836272e609175f53399b05936ed784a81e'
+
+  - book: "/srv/salt/state/formulae/logstash"
+    git: "{giturlbase}/paas-share/salt/logstash-formula"
+    branch: "1a6ddf9ee873e20dff40cdf7fc9628c4d8cc0db7"
+#
+# /srv/salt/state/base
+  - book: "/srv/salt/state/base"
+    git: "{giturlbase}/paas-core/salt-openstack/state-base.git"
+    branch: "b14ad9dcf5e3843e542031af1c11e3b9e34bfeda"
+
+  - book: "/srv/salt/state/base/top.sls"
+    link: "top-{environment}.sls"
+
+  - book: "/srv/salt/state/base/users"
+    git: "{giturlbase}/paas-core/salt-openstack/users.git"
+    branch: "9a65e31619cc5003a64fcff6b142736240482408"
+
+  - book: "/srv/salt/state/base/ufw"
+    git: "{giturlbase}/paas-core/salt-openstack/ufw.git"
+    # On branch dbaas_aw2_az2
+    branch: "f6311442d05c34c324cc7ef16e6c70f543ec5a39"
+
+#   dbaas_aw2_azX:
+#     - /srv/salt/state/env/dbaas_aw2_az1
+
+  - book: "/srv/salt/state/env/dbaas_{environment}_az1"
+    link: "/srv/salt/state/env/dbaas_state_env/"
+
+  - book: "/srv/salt/state/env/dbaas_{environment}_az2"
+    link: "/srv/salt/state/env/dbaas_state_env/"
+
+  - book: "/srv/salt/state/env/dbaas_{environment}_az3"
+    link: "/srv/salt/state/env/dbaas_state_env/"
+
+#
+# /srv/salt/state/env/dbaas_state_env
+
+  - book: "/srv/salt/state/env/dbaas_state_env/apt"
+    git: "{giturlbase}/paas-core/salt-openstack/apt.git"
+    branch: "78c92a4ab474e498e06854056d7a846e4bb31e34"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/datadog"
+    git: "{giturlbase}/paas-core/salt-openstack/datadog.git"
+    branch: "9a58568485750788f58782e5440a264f24cf4c58"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/dbaas_networking"
+    git: "{giturlbase}/paas-core/salt-openstack/dbaas_networking.git"
+    branch: "de161512bc5dc4dea84c179fcb6cac913f62b6ea"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/icinga"
+    git: "{giturlbase}/paas-core/salt-openstack/icinga.git"
+    branch: "f4e845fbd4820ab2372dd51439e95b001c89c30e"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/logrotate"
+    git: "{giturlbase}/paas-core/salt-openstack/logrotate.git"
+    branch: "69b5efb6202077a77540a8d4dc68a5f851f795f6"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/openstack"
+    git: "{giturlbase}/paas-core/salt-openstack/openstack.git"
+    branch: "7f0b895f8049cf3e09ada4927f16a9a7aebbb553"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/logstash"
+    git: "{giturlbase}/paas-core/salt-openstack/logstash.git"
+    branch: "068a02b03c53d6d8cd3f73be8a62ccfdbccdf551"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/percona_galera"
+    git: "{giturlbase}/paas-core/salt-openstack/percona_galera.git"
+    branch: "6f9ab129925256be2c52ab07765215cc3093bec5"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/salt-minion"
+    git: "{giturlbase}/paas-core/salt-openstack/salt-minion.git"
+    branch: "7c65931d1daf68fe339b30ab9d529122a4dab010"
+
+  - book: "/srv/salt/state/env/dbaas_state_env/upstart"
+    git: "{giturlbase}/paas-core/salt-openstack/upstart.git"
+    branch: "95451e2498823d371e66f296b869cc6930f061c5"
+
+# pillar_roots:
+#   base:
+#     - /srv/salt/pillar/base
+#   dbaas_ae1_az1:
+#     - /srv/salt/pillar/env/dbaas_ae1_az1
+#   dbaas_ae1_az2:
+#     - /srv/salt/pillar/env/dbaas_ae1_az2
+#   dbaas_ae1_az3:
+#     - /srv/salt/pillar/env/dbaas_ae1_az3
+
+  - book: "/srv/salt/pillar/base"
+    git: "{giturlbase}/paas-core/salt-openstack/pillar-base.git"
+    branch: ""
+
+  - book: "/srv/salt/pillar/base/top.sls"
+    link: "top-{environment}.sls"
+
+  - book: "/srv/salt/pillar/base/secrets.sls"
+    link: "secrets-{environment}.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az1/endpoints-{environment}az1-v1.sls"
+    link: "../../base/endpoints-{environment}az1-v1.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az1/secrets-{environment}az1-v1.sls"
+    link: "../../base/secrets-{environment}az1-v1.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az2/endpoints-{environment}az2-v1.sls"
+    link: "../../base/endpoints-{environment}az2-v1.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az2/secrets-{environment}az2-v1.sls"
+    link: "../../base/secrets-{environment}az2-v1.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az3/endpoints-{environment}az3-v1.sls"
+    link: "../../base/endpoints-{environment}az3-v1.sls"
+
+  - book: "/srv/salt/pillar/env/dbaas_{environment}_az3/secrets-{environment}az3-v1.sls"
+    link: "../../base/secrets-{environment}az3-v1.sls"
