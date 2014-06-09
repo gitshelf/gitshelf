@@ -14,9 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 import logging
-import os
-from sh import git
 from gitshelf.cli import BaseCommand
+from book import Book
 
 LOG = logging.getLogger(__name__)
 
@@ -25,47 +24,20 @@ class GitShelfStatusCommand(BaseCommand):
     """ Install a set of repos."""
 
     def execute(self, parsed_args):
+        """excute, something to do for this command."""
         LOG.debug(parsed_args.__dict__)
         config = self._parse_configuration(parsed_args)
 
-        # iterate over the config, doing things
-        books = config['books']
-        LOG.debug(books)
-        for book in books:
+        LOG.debug(config['books'])
+        # load the config into an array of Book objects
+        books = []
+        for book in config['books']:
             LOG.debug(book)
-            if 'branch' not in book:
-                book['branch'] = 'master'
+            # the dictionary we get from the parsed configuration should
+            # match the named parameters to the Book class, so we use
+            # ** to unpack the dictionary to the class arguments
+            books.append(Book(**book))
 
-            book_path = book['book']
-            if parsed_args.fakeroot:
-                fakeroot = parsed_args.fakeroot[0]
-                LOG.debug('fakepath set, prepending {0} to {1}'.format(fakeroot, book['book']))
-                # need to strip any leading os.sep
-                book_path = os.path.join(fakeroot, book_path.lstrip(os.sep))
-                LOG.debug('book_path is now {0}'.format(book_path))
-
-            if 'git' in book:
-                if not os.path.exists(book_path):
-                    LOG.info("ERROR book {0} from {1}, branch: {2} doesn't exist.".format(book_path,
-                                                                              book['git'],
-                                                                              book['branch']))
-                else:
-                    # chdir to the book & run `git status`
-                    cwd = os.getcwd()
-                    os.chdir(book_path)
-                    LOG.info("# book {0}".format(book_path))
-                    LOG.info(git.status())
-                    os.chdir(cwd)
-
-            elif 'link' in book:
-                # check the link points to the correct location
-                link_target = os.readlink(book_path)
-                LOG.debug('book: {0} should point to {1}, it points to {2}'.format(book_path, book['link'], link_target))
-                if link_target == book['link']:
-                    LOG.info('# book {0} correctly points to {1}'.format(book_path, link_target))
-                else:
-                    LOG.error('{0} should point to {1}, it points to {2}'.format(book_path, book['link'], link_target))
-
-
-            else:
-                LOG.error('Unknown book type: {0}'.format(book))
+        # now iterate over the list of book objects
+        for book in books:
+            book.status()
