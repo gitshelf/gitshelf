@@ -158,3 +158,59 @@ class Book:
                 LOG.error('{0} should point to {1}, it points to {2}'.format(self.path, self.link, self.link))
         else:
             LOG.error('Unknown book type: {0}'.format(self.path))
+
+    @staticmethod
+    def discover(rootdir='.'):
+        """discover all the git repo's under this directory"""
+        books = []
+        for root, subFolders, files in os.walk(rootdir):
+            for file in files:
+                this_file = os.path.join(root, file).replace(rootdir + os.sep, '')
+                if this_file.endswith('.git/config') and not this_file.startswith('.git/config'):
+                    repo = os.path.dirname(os.path.dirname(this_file))
+                    sha1 = (Book._discover_sha1(repo))
+                    remotes = Book._discover_remotes(repo)
+                    LOG.debug("Found a git repo! {0}".format(repo))
+                    LOG.debug("remotes are {0}".format(Book._discover_remotes(repo)))
+                    LOG.debug("sha1 is {0}".format(Book._discover_sha1(repo)))
+                    books.append(Book(book=repo, git=remotes['origin'], branch=sha1))
+        return books
+
+    @staticmethod
+    def _discover_branch(path='.'):
+        """discover the git branch/sha1 of the given directory"""
+        cwd = os.getcwd()
+        os.chdir(path)
+        cb = git('describe', '--all', '--contains', '--abbrev=4', 'HEAD').rstrip('\r\n')
+        os.chdir(cwd)
+        return cb
+
+    @staticmethod
+    def _discover_sha1(path='.'):
+        """discover the git branch/sha1 of the given directory"""
+        cwd = os.getcwd()
+        os.chdir(path)
+        sha1 = git('rev-parse', 'HEAD').rstrip('\r\n')
+        os.chdir(cwd)
+        return sha1
+
+    @staticmethod
+    def _discover_remotes(path='.'):
+        """discover the remote repos configured for a repo"""
+        cwd = os.getcwd()
+        os.chdir(path)
+        remotes = {}
+        for remote_line in git("remote", "-v"):
+            r = remote_line.split()[:2]
+            remotes[r[0]] = r[1]
+        os.chdir(cwd)
+        return remotes
+
+    @staticmethod
+    def _discover_remote(path='.'):
+        """return  the origin remote, or the first remote if origin isn't defined"""
+        remotes = Book._discover_remotes(path)
+        if 'origin' in remotes:
+            return remotes['origin']
+        else:
+            return remotes[remotes.keys()[0]]

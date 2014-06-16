@@ -49,6 +49,7 @@ setup(
         'gitshelf.cli': [
             'install = gitshelf.cli.install:GitShelfInstallCommand',
             'status = gitshelf.cli.status:GitShelfStatusCommand',
+            'discover = gitshelf.cli.discover:GitShelfDiscoverCommand',
         ],
     },
     classifiers=[
