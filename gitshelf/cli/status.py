@@ -15,28 +15,21 @@
 # under the License.
 import logging
 from gitshelf.cli import BaseCommand
-from book import Book
 
 LOG = logging.getLogger(__name__)
 
 
 class GitShelfStatusCommand(BaseCommand):
-    """ Install a set of repos."""
+    """ Check a set of repos for existance & cleaness"""
 
     def execute(self, parsed_args):
-        """excute, something to do for this command."""
-        LOG.debug(parsed_args.__dict__)
+        """execute, something to do for this command."""
+        # load the configuration from yaml, rendering
+        # any tokens along the way
         config = self._parse_configuration(parsed_args)
 
-        LOG.debug(config['books'])
-        # load the config into an array of Book objects
-        books = []
-        for book in config['books']:
-            LOG.debug(book)
-            # the dictionary we get from the parsed configuration should
-            # match the named parameters to the Book class, so we use
-            # ** to unpack the dictionary to the class arguments
-            books.append(Book(**book))
+        # get back the collection of books
+        books = self._get_books(parsed_args, config)
 
         # now iterate over the list of book objects
         for book in books:

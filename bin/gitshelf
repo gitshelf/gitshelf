@@ -15,7 +15,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 import sys
+import logging
 from gitshelf.shell import GitShelfShell
+
+# logging.basicConfig(level=logging.INFO)
 
 shell = GitShelfShell()
 sys.exit(shell.run(sys.argv[1:]))

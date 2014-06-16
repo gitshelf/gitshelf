@@ -14,7 +14,6 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-import textwrap
 from setuptools import setup, find_packages
 from gitshelf.openstack.common import setup as common_setup
 
@@ -46,11 +45,12 @@ setup(
         'bin/gitshelf',
     ],
     cmdclass=common_setup.get_cmdclass(),
-    entry_points=textwrap.dedent("""
-        [gitshelf.cli]
-        install = gitshelf.cli.install:GitShelfInstallCommand
-        status = gitshelf.cli.status:GitShelfStatusCommand
-        """),
+    entry_points={
+        'gitshelf.cli': [
+            'install = gitshelf.cli.install:GitShelfInstallCommand',
+            'status = gitshelf.cli.status:GitShelfStatusCommand',
+        ],
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: Apache Software License',

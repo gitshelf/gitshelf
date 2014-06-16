@@ -15,10 +15,9 @@
 # under the License.
 import logging
 import yaml
-import os
 import re
-from sh import git
 from gitshelf.utils import NestedDict
+from gitshelf import Book
 from cliff.command import Command
 
 LOG = logging.getLogger(__name__)
@@ -42,16 +41,15 @@ class BaseCommand(Command):
         parser.add_argument('--fakeroot',
                             dest='fakeroot',
                             default=None,
-                            nargs=1,
-                            help='path to prepand to any book paths, to test shelves ' \
-                                    'that are absolute without using the absolute path')
+                            help='path to prepand to any book paths, to test shelves '
+                                 'that are absolute without using the absolute path')
 
         parser.add_argument('--environment',
                             dest='environment',
                             default=None,
                             nargs=1,
-                            help='set the desired environment, overriding any default' \
-                                    'settings in the config file (gitshelf.yml)')
+                            help='set the desired environment, overriding any default'
+                                 'settings in the config file (gitshelf.yml)')
 
         parser.add_argument('--dry-run',
                             default=False,
@@ -61,10 +59,9 @@ class BaseCommand(Command):
         parser.add_argument('--skip-repo-url-check',
                             dest='skiprepourlcheck',
                             default=False,
-                            help="Defaults to False" \
-                                    'Skip the repo remote host check',
+                            help='Defaults to False'
+                                 'Skip the repo remote host check',
                             action='store_true')
-
 
         return parser
 
@@ -122,3 +119,20 @@ class BaseCommand(Command):
 
         return config
 
+    def _get_books(self, parsed_args, config):
+
+        LOG.debug("parsed_args: {0}".format(parsed_args))
+        LOG.debug("config: {0}".format(config))
+
+        # load the config into an array of Book objects
+        books = []
+        for book in config['books']:
+            LOG.debug("Fresh book: {0}".format(book))
+            book.update({'fakeroot': parsed_args.fakeroot})
+            LOG.debug("Final book: {0}".format(book))
+            # the dictionary we get from the parsed configuration should
+            # match the named parameters to the Book class, so we use
+            # ** to unpack the dictionary to the class arguments
+            books.append(Book(**book))
+
+        return books
