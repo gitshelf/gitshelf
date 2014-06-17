@@ -160,7 +160,7 @@ class Book:
             LOG.error('Unknown book type: {0}'.format(self.path))
 
     @staticmethod
-    def discover(rootdir='.'):
+    def discover(rootdir='.', usebranch=False):
         """discover all the git repo's under this directory"""
         books = []
         for root, subFolders, files in os.walk(rootdir):
@@ -168,12 +168,17 @@ class Book:
                 this_file = os.path.join(root, file).replace(rootdir + os.sep, '')
                 if this_file.endswith('.git/config') and not this_file.startswith('.git/config'):
                     repo = os.path.dirname(os.path.dirname(this_file))
+                    branch = (Book._discover_branch(repo))
                     sha1 = (Book._discover_sha1(repo))
                     remotes = Book._discover_remotes(repo)
                     LOG.debug("Found a git repo! {0}".format(repo))
-                    LOG.debug("remotes are {0}".format(Book._discover_remotes(repo)))
-                    LOG.debug("sha1 is {0}".format(Book._discover_sha1(repo)))
-                    books.append(Book(book=repo, git=remotes['origin'], branch=sha1))
+                    LOG.debug("remotes are {0}".format(remotes))
+                    LOG.debug("branch is {0}".format(branch))
+                    LOG.debug("sha1 is {0}".format(sha1))
+                    if usebranch:
+                        books.append(Book(book=repo, git=remotes['origin'], branch=branch))
+                    else:
+                        books.append(Book(book=repo, git=remotes['origin'], branch=sha1))
         return books
 
     @staticmethod

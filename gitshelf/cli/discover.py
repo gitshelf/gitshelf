@@ -23,11 +23,19 @@ LOG = logging.getLogger(__name__)
 class GitShelfDiscoverCommand(BaseCommand):
     """ Discover the git repos & symlinks under this directory """
 
+    def get_parser(self, prog_name):
+        parser = super(BaseCommand, self).get_parser(prog_name)
+        parser.add_argument('--use-branch',
+                            default=False,
+                            help="Use the branch name instead of the sha1 for pinning",
+                            action='store_true')
+        return parser
+
     def execute(self, parsed_args):
         """execute, something to do for this command."""
 
         # get back the collection of books
-        books = Book.discover()
+        books = Book.discover(usebranch=parsed_args.use_branch)
 
         # now iterate over the list of book objects
         # TODO: be less hacky and use a YAML emitter
