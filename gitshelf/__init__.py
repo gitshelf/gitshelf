@@ -179,6 +179,9 @@ class Book:
                         books.append(Book(book=repo, git=remotes['origin'], branch=branch))
                     else:
                         books.append(Book(book=repo, git=remotes['origin'], branch=sha1))
+
+                if os.path.islink(this_file):
+                        books.append(Book(book=this_file, link=os.readlink(this_file)))
         return books
 
     @staticmethod

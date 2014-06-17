@@ -42,5 +42,8 @@ class GitShelfDiscoverCommand(BaseCommand):
         print "books:"
         for book in books:
             print "  - book: {0}".format(book.path)
-            print "    git: {0}".format(book.git)
-            print "    branch: {0}".format(book.branch)
+            if book.git is not None:
+                print "    git: {0}".format(book.git)
+                print "    branch: {0}".format(book.branch)
+            elif book.link is not None:
+                print "    link: {0}".format(book.link)
