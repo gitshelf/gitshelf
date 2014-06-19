@@ -47,3 +47,4 @@ class GitShelfDiscoverCommand(BaseCommand):
                 print "    branch: {0}".format(book.branch)
             elif book.link is not None:
                 print "    link: {0}".format(book.link)
+            print
