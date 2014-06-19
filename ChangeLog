@@ -1,3 +1,15 @@
+commit cd852bb1df9ee82ed8f50b64501b71c13fb62b20
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 13:49:36 2014 +0100
+
+    Collected build artifacts & updated docs
+
+ .gitignore |   2 +
+ AUTHORS    |   2 +
+ ChangeLog  | 253 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README.md  |   8 +-
+ 4 files changed, 264 insertions(+), 1 deletion(-)
+
 commit 4d32a01e82d7202726397c313d1c5662de4ed952
 Author: Simon McCartney <simon.mccartney@hp.com>
 Date:   Thu Jun 19 13:09:00 2014 +0100

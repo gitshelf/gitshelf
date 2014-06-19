@@ -37,6 +37,9 @@ class GitShelfDiscoverCommand(BaseCommand):
         # get back the collection of books
         books = Book.discover(usebranch=parsed_args.use_branch)
 
+        # sort the list, based on the path attribute
+        books.sort(key=lambda book: book.path)
+
         # now iterate over the list of book objects
         # TODO: be less hacky and use a YAML emitter
         print "books:"
