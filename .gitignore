@@ -3,3 +3,5 @@
 *.egg-info
 docs/srv/
 .ropeproject/
+build/
+dist/

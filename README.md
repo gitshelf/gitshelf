@@ -18,8 +18,9 @@ gitshelf is published on pypi [here](https://pypi.python.org/pypi/gitshelf), so 
 
 You can also install from the github repo:
 
+    pip install git+http://github.com/moniker-dns/gitshelf
 
-We use the python [sh](https://pypi.python.org/pypi/sh) sub process interface  to work with git repos, so you'll need a standard git cli install, if you don't know how to do that, this might be the wrong tool for you.
+We use the python [sh](https://pypi.python.org/pypi/sh) sub process interface to work with git repos, so you'll need a standard git cli install, if you don't know how to do that, this might be the wrong tool for you.
 
 ## Usage
 
@@ -126,3 +127,8 @@ sure pbr doesn't break everything.
     virtualenv --system-site-packages .venv && . .venv/bin/activate && python setup.py develop
     # hack
 
+## publishing a new version
+
+build & upload to pypi in a single hit:
+
+    python setup.py sdist upload

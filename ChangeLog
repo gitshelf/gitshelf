@@ -1,0 +1,253 @@
+commit 4d32a01e82d7202726397c313d1c5662de4ed952
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 13:09:00 2014 +0100
+
+    Fix my broken understanding of python packaging
+    
+    * shift the Book class out to gitshelf/book.py
+    * fix up required import statements
+
+ README.md                |  30 ++++---
+ gitshelf/__init__.py     | 224 -----------------------------------------------
+ gitshelf/book.py         | 224 +++++++++++++++++++++++++++++++++++++++++++++++
+ gitshelf/cli/__init__.py |   2 +-
+ gitshelf/cli/discover.py |   2 +-
+ 5 files changed, 245 insertions(+), 237 deletions(-)
+
+commit 3dc75256578f34d05262431d2b83bc46390df693
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 11:06:51 2014 +0100
+
+    minor output tweak to shelf discovery
+
+ gitshelf/cli/discover.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 2901a86f89113074ff8ced0d2ab945301038712f
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 12:24:02 2014 +0100
+
+    Documentation update
+
+ README.md | 129 ++++++++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 97 insertions(+), 32 deletions(-)
+
+commit e24993d710abb7f55e6ed2b0d9bb3ab50d843b74
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 11:46:47 2014 +0100
+
+    Added link discovery to the discover sub-command
+
+ gitshelf/__init__.py     | 3 +++
+ gitshelf/cli/discover.py | 7 +++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+commit 1f440193fd5dee5e7e838a6299e8d057f4c3e823
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 10:58:18 2014 +0100
+
+    Added --use-branch flag to discover
+    
+    * sets the branch on discovered repos to the branch name, not the sha1
+
+ gitshelf/__init__.py     | 13 +++++++++----
+ gitshelf/cli/discover.py | 10 +++++++++-
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+
+commit 14a981a7cb42979acf7469ba414a83449fa726af
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 00:33:53 2014 +0100
+
+    Crude repo discovery added
+
+ gitshelf/__init__.py     | 56 ++++++++++++++++++++++++++++++++++++++++++++++++
+ gitshelf/cli/discover.py | 38 ++++++++++++++++++++++++++++++++
+ setup.py                 |  1 +
+ 3 files changed, 95 insertions(+)
+
+commit 9fe853e2704bc6eefdab88278b6988032371173e
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jun 16 19:52:09 2014 +0100
+
+    Move functionality to Book object
+
+ .gitignore               |   1 +
+ bin/gitshelf             |   3 +
+ gitshelf/__init__.py     | 160 +++++++++++++++++++++++++++++++++++++++++++++++
+ gitshelf/book.py         | 159 ----------------------------------------------
+ gitshelf/cli/__init__.py |  34 +++++++---
+ gitshelf/cli/install.py  |  17 ++---
+ gitshelf/cli/status.py   |  19 ++----
+ setup.py                 |  12 ++--
+ tools/pip-requires       |   1 -
+ 9 files changed, 205 insertions(+), 201 deletions(-)
+
+commit 8d802ae1a65850ba7f9d18c50e5dbac0e9bcb34b
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jun 9 20:22:21 2014 +0100
+
+    wip
+
+ gitshelf/book.py        | 132 ++++++++++++++++++++++++++----------------------
+ gitshelf/cli/install.py | 108 +++++----------------------------------
+ gitshelf/cli/status.py  |  54 +++++---------------
+ tools/pip-requires      |   1 +
+ 4 files changed, 101 insertions(+), 194 deletions(-)
+
+commit d92c7cd4a3eb0627d99a66d8c0caebd2f5553165
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Mar 28 14:41:05 2014 +0000
+
+    wip
+
+ docs/gitshelf-ae1.yml | 159 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ docs/gitshelf-aw2.yml | 156 +++++++++++++++++++++++++++++++++++++++++++++++++
+ gitshelf/book.py      | 145 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 460 insertions(+)
+
+commit 542f7cf539fe44ce77f27138b717fd5e8f8daec4
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Mar 13 11:19:08 2014 +0000
+
+    Added --skip-repo-url-check
+
+ gitshelf/cli/__init__.py |  7 +++++++
+ gitshelf/cli/install.py  | 38 ++++++++++++++++++++++----------------
+ 2 files changed, 29 insertions(+), 16 deletions(-)
+
+commit 3c76625d4d3bc367667f964feae68fcb321af7a7
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Mar 11 12:39:19 2014 +0000
+
+    WIP
+    
+    1) added --environment to forcibly set the environment from the cli
+    2) on install, check the remote url matches the gitshelf
+
+ docs/gitshelf-w-tokens.yml |  6 +++---
+ gitshelf/cli/__init__.py   | 19 ++++++++++++++-----
+ gitshelf/cli/install.py    | 17 +++++++++++++++++
+ gitshelf/utils.py          | 32 ++++++++++++++++++++++++++++++++
+ 4 files changed, 66 insertions(+), 8 deletions(-)
+
+commit 59da5a13261304d12a10b32bbc4b15c2eb79e546
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Mar 10 16:55:18 2014 +0000
+
+    Support token expansion from the defaults & environments sections
+
+ README.md                       |  4 ++-
+ docs/Gitshelf                   | 19 -------------
+ docs/gitshelf-paas-core-aw2.yml | 59 +++++++++++++++++++++++++++++++++++++++++
+ docs/gitshelf-w-tokens.yml      | 34 ++++++++++++++++++++++++
+ gitshelf/cli/__init__.py        | 30 ++++++++++++++++++++-
+ gitshelf/cli/status.py          | 11 ++++++++
+ 6 files changed, 136 insertions(+), 21 deletions(-)
+
+commit 6fadd498c5f703b8c566fe48bee96dedfb81afe2
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Feb 12 16:40:21 2014 +0000
+
+    handle status checks on links better
+
+ docs/gitshelf.yml      |  2 ++
+ gitshelf/cli/status.py | 24 +++++++++++++-----------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
+
+commit b3a8a86c936801f2a0e682a7dc7ce2924ab85560
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 23:50:06 2014 +0000
+
+    Added support for symlink books
+
+ gitshelf/cli/install.py | 64 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 48 insertions(+), 16 deletions(-)
+
+commit 51acb9e72d5ced3e3c2f532b0b9927d37622fb37
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 23:07:59 2014 +0000
+
+    fixed bug when using --fakeroot with status
+
+ gitshelf/cli/status.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 05ec0164c8d669ed8ed2de912a510bc413ac7344
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 18:14:08 2014 +0000
+
+    wip
+    
+    Shifted share cli args up to BaseCommand
+    Fixed fakeroot path correction
+
+ .gitignore               |  1 +
+ docs/gitshelf.yml        |  2 +-
+ gitshelf/cli/__init__.py | 80 ++++++++++++++++++++++++++++++++++++++++++++++++
+ gitshelf/cli/install.py  | 71 +++++++++++-------------------------------
+ gitshelf/cli/status.py   | 43 +++++++++++++++++++-------
+ gitshelf/shell.py        |  9 ++++--
+ 6 files changed, 138 insertions(+), 68 deletions(-)
+
+commit 376010a304aad8cf3058bb4d9c1551fe8f4568a1
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jan 27 14:27:03 2014 +0000
+
+    wip
+
+ docs/Gitshelf              | 19 +++++++++++++++++++
+ gitshelf/cli/status.py     |  4 ++--
+ gitshelf/tests/__init__.py | 27 +++++++++++++++++++++++++++
+ tools/pip-requires         |  2 ++
+ tools/test-requires        |  2 ++
+ 5 files changed, 52 insertions(+), 2 deletions(-)
+
+commit e14f32911b559aa4b78726952113b8c6632101da
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Fri Nov 8 21:31:12 2013 +0000
+
+    wip
+
+ README.md | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
+
+commit 791af671722c7ab1b633b330819f70dbcbb32cc4
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Fri Nov 8 19:49:04 2013 +0000
+
+    first drop
+
+ .gitignore                            |   3 +
+ MANIFEST.in                           |  10 +
+ bin/gitshelf                          |  21 +++
+ docs/gitshelf.yml                     |  19 ++
+ gitshelf/__init__.py                  |   0
+ gitshelf/cli/__init__.py              |   0
+ gitshelf/cli/install.py               | 103 +++++++++++
+ gitshelf/cli/status.py                |  36 ++++
+ gitshelf/exceptions.py                |  19 ++
+ gitshelf/openstack/__init__.py        |   0
+ gitshelf/openstack/common/__init__.py |   0
+ gitshelf/openstack/common/setup.py    | 335 ++++++++++++++++++++++++++++++++++
+ gitshelf/openstack/common/version.py  |  79 ++++++++
+ gitshelf/shell.py                     |  35 ++++
+ gitshelf/tests/__init__.py            |   0
+ gitshelf/utils.py                     |  61 +++++++
+ gitshelf/version.py                   |  18 ++
+ openstack-common.conf                 |   3 +
+ setup.cfg                             |  16 ++
+ setup.py                              |  62 +++++++
+ tools/pip-requires                    |   3 +
+ tools/setup-requires                  |   0
+ tools/test-requires                   |   0
+ tox.ini                               |  39 ++++
+ 24 files changed, 862 insertions(+)
+
+commit 6ef5b2f226e5184b5c11be293cdb0153f8b1c2e2
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Wed Nov 6 16:37:28 2013 +0000
+
+    wip
+
+ README.md | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
