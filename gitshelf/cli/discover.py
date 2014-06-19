@@ -15,7 +15,7 @@
 # under the License.
 import logging
 from gitshelf.cli import BaseCommand
-from gitshelf import Book
+from gitshelf.book import Book
 
 LOG = logging.getLogger(__name__)
 

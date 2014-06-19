@@ -5,9 +5,19 @@ Manage a collection of git repos that you don't want to manage as sub-modules
 Created to be used to manage a set of salt states, formula & pillars in a controlled fashion, the default config file is a YAML file that can also be loaded as a pillar (for whatever reason).
 Using the branch parameter, you can pin a repo to a branch, sha1, tag, whatever you need to keep it at your known good version.
 
-Also supports creating symlinks for you
+Also supports creating symlinks for you.
+
+
 
 ## Install
+
+gitshelf is published on pypi [here](https://pypi.python.org/pypi/gitshelf), so you can install from pypi using pip:
+
+    pip install gitshelf
+
+
+You can also install from the github repo:
+
 
 We use the python [sh](https://pypi.python.org/pypi/sh) sub process interface  to work with git repos, so you'll need a standard git cli install, if you don't know how to do that, this might be the wrong tool for you.
 
@@ -27,7 +37,7 @@ Here's a sample gitshelf.yml
         branch: "staging"
       - book: srv/salt/pillar/base/top.sls
         link: some/link/target.sls
-       
+
 
 ### Create the required clones
 
@@ -38,7 +48,7 @@ Here's a sample gitshelf.yml
 Run `git status` against each repo, reporting drift
 
     $ gitshelf status
-    
+
 ### Discover all the repos
 Crudely create a gitshelf.yml for the current directory, recurses down through the directory looking for git repos (by looking for .git/config) and symlinks:
 
@@ -66,7 +76,7 @@ Crudely create a gitshelf.yml for the current directory, recurses down through t
         branch: ef246438c2aeb7f9d934409191edd7dc1ebf904e
 
 Or use the branch name instead of the SHA1:
-    
+
     $ gitshelf discover --use-branch
     books:
       - book: srv/salt/pillar/base
@@ -83,10 +93,10 @@ Or use the branch name instead of the SHA1:
 
 ### Tokens & Environments
 gitshelf supports token replacement in the `gitshelf.yml`:
-    
+
     defaults:
       environment: dev
-    
+
     environments:
       prod:
         description: "Prod deploy kit, use the r/o git mirror"
@@ -96,7 +106,7 @@ gitshelf supports token replacement in the `gitshelf.yml`:
         description: "dev deploy kit, use the gerrit repo"
         tokens:
           giturlbase: "ssh://simonm@gerrit.paas.hpcloud.net:29418"
-    
+
     books:
       - book: "/srv/salt/state/formulae/beaver"
         git: "{giturlbase}/paas-share/salt/beaver-formula"
@@ -105,7 +115,7 @@ gitshelf supports token replacement in the `gitshelf.yml`:
 You can specify the environment to use using the `--environment` option:
 
     gitshelf install --environment prod
-    
+
 TODO: Add support for specifying a token on the command line
 
 ## Development
@@ -113,8 +123,6 @@ TODO: Add support for specifying a token on the command line
 pbr introduces some weirdness under virtualenv, so we use the site packages to help make
 sure pbr doesn't break everything.
 
-    virtualenv --system-site-packages .venv
-    . .venv/bin/activate
-    python setup.py develop
+    virtualenv --system-site-packages .venv && . .venv/bin/activate && python setup.py develop
     # hack
 

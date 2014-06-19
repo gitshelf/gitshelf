@@ -17,7 +17,7 @@ import logging
 import yaml
 import re
 from gitshelf.utils import NestedDict
-from gitshelf import Book
+from gitshelf.book import Book
 from cliff.command import Command
 
 LOG = logging.getLogger(__name__)
