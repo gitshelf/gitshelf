@@ -1,3 +1,27 @@
+commit cabdd8a40b4031622a9d82f15904075139237826
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jul 22 15:51:45 2014 +0100
+
+    Improved the status check to check that the correct branch is set
+    
+    * also added diff sub-command, not working correctly
+
+ gitshelf/book.py     | 70 +++++++++++++++++++++++++++++++++++++++++++---------
+ gitshelf/cli/diff.py | 36 +++++++++++++++++++++++++++
+ setup.py             |  1 +
+ 3 files changed, 95 insertions(+), 12 deletions(-)
+
+commit 2d8dff82cf1b2506370735da788ce4c1d7efe5a2
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 14:51:01 2014 +0100
+
+    Sort discovered books
+
+ AUTHORS                  |  2 +-
+ ChangeLog                | 12 ++++++++++++
+ gitshelf/cli/discover.py |  3 +++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
+
 commit cd852bb1df9ee82ed8f50b64501b71c13fb62b20
 Author: Simon McCartney <simon.mccartney@hp.com>
 Date:   Thu Jun 19 13:49:36 2014 +0100

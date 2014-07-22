@@ -98,7 +98,7 @@ class Book:
                 LOG.error('ERROR: {0} wasn\'t found in the list of remotes for {1}'.format(self.git, self.path))
 
         if not self._check_branch():
-            LOG.info("Switching {0} to branch {2}".format(self.path,
+            LOG.info("Switching {0} to branch {1}".format(self.path,
                                                           self.branch))
             git.fetch
             git.checkout(self.branch)
@@ -138,9 +138,10 @@ class Book:
         if ((cb == self.branch) or (sha1 == self.branch)):
             return True
         else:
-            LOG.info("ERROR {0} is at {1} not {2}".format(self.path,
-                                                          cb,
-                                                          self.branch))
+            LOG.warn("WARNING {0} is at branch:{1} (sha1: {2}), not {3}".format(self.path,
+                                                                                cb,
+                                                                                sha1,
+                                                                                self.branch))
             return False
 
     def status(self):
