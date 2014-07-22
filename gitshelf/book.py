@@ -97,17 +97,9 @@ class Book:
             else:
                 LOG.error('ERROR: {0} wasn\'t found in the list of remotes for {1}'.format(self.git, self.path))
 
-        # check the branch is set as we expect
-        # cb = git("symbolic-ref", "HEAD").replace('refs/heads/', '').rstrip('\r\n')
-        cb = git('describe', '--all', '--contains', '--abbrev=4', 'HEAD').rstrip('\r\n')
-        sha1 = git('rev-parse', 'HEAD').rstrip('\r\n')
-        LOG.warn("Book {0}'s current branch is {1}".format(self.path, cb))
-        LOG.warn("Book {0}'s current sha1 is {1}".format(self.path, sha1))
-
-        if ((cb != self.branch) or (sha1 != self.branch)):
-            LOG.info("Switching {0} from {1} to branch {2}".format(self.path,
-                                                                   cb,
-                                                                   self.branch))
+        if not self._check_branch():
+            LOG.info("Switching {0} to branch {2}".format(self.path,
+                                                          self.branch))
             git.fetch
             git.checkout(self.branch)
 
@@ -134,6 +126,23 @@ class Book:
             else:
                 raise
 
+    def _check_branch(self):
+        """Check that the current working directory is at the given branch/sha1"""
+
+        cb = git('describe', '--all', '--contains', '--abbrev=4', 'HEAD').rstrip('\r\n')
+        sha1 = git('rev-parse', 'HEAD').rstrip('\r\n')
+        LOG.debug("Book {0} should be at {1}".format(self.path, self.branch))
+        LOG.debug("Book {0}'s current branch is {1}".format(self.path, cb))
+        LOG.debug("Book {0}'s current sha1 is {1}".format(self.path, sha1))
+
+        if ((cb == self.branch) or (sha1 == self.branch)):
+            return True
+        else:
+            LOG.info("ERROR {0} is at {1} not {2}".format(self.path,
+                                                          cb,
+                                                          self.branch))
+            return False
+
     def status(self):
         if self.git and self.link is None:
             # git repo, check it exists & isn't dirty
@@ -145,8 +154,45 @@ class Book:
                 # chdir to the book & run `git status`
                 cwd = os.getcwd()
                 os.chdir(self.path)
+                if self._check_branch():
+                    git_status = git.status()
+                    if "nothing to commit, working directory clean" in git_status:
+                        LOG.info("# book {0} OK".format(self.path))
+                    else:
+                        LOG.info("# book {0}".format(self.path))
+                        LOG.info(git_status)
+                os.chdir(cwd)
+
+        elif self.link and self.git is None:
+            # check the link points to the correct location
+            link_target = os.readlink(self.path)
+            LOG.debug('book: {0} should point to {1}, it points to {2}'.format(self.path, self.link, link_target))
+            if link_target == self.link:
+                LOG.info('# book {0} correctly points to {1}'.format(self.path, self.link))
+            else:
+                LOG.error('{0} should point to {1}, it points to {2}'.format(self.path, self.link, self.link))
+
+        else:
+            LOG.error('Unknown book type: {0}'.format(self.path))
+
+    def diff(self):
+        if self.git and self.link is None:
+            # git repo, check it exists & isn't dirty
+            if not os.path.exists(self.path):
+                LOG.info("ERROR book {0} from {1} doesn't exist.".format(
+                    self.path,
+                    self.git))
+            else:
+                # chdir to the book & run `git status`
+                cwd = os.getcwd()
+                os.chdir(self.path)
                 LOG.info("# book {0}".format(self.path))
-                LOG.info(git.status())
+                git_diff = git.diff()
+                if git_diff:
+                    LOG.info("# book {0} had changes:".format(self.path))
+                    LOG.info(git_diff)
+                else:
+                    LOG.info("# book {0} is clean".format(self.path))
                 os.chdir(cwd)
         elif self.link and self.git is None:
             # check the link points to the correct location
