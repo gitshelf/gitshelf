@@ -115,9 +115,17 @@ class Book:
             # create the symlink
             os.symlink(self.link, self.path)
         else:
-            LOG.info("Book {0} already exists, target: {1}".format(self.path, os.readlink(self.path)))
+            if not self._check_link():
+                LOG.info("Correcting book {0} to {1}".format(self.path, self.link))
+                os.remove(self.path)
+                os.symlink(self.link, self.path)
+            else:
+                LOG.info("Book {0} already exists, target: {1}".format(self.path, os.readlink(self.path)))
 
     def _mkdir_p(self, path):
+        if path == "":
+            return
+
         try:
             os.makedirs(path)
         except OSError as exc:  # Python >2.5
@@ -144,6 +152,16 @@ class Book:
                                                                                 self.branch))
             return False
 
+    def _check_link(self):
+        # check the link points to the correct location
+        link_target = os.readlink(self.path)
+        LOG.debug('book: {0} should point to {1}, it points to {2}'.format(self.path, self.link, link_target))
+
+        if link_target == self.link:
+            return True
+        else:
+            return False
+
     def status(self):
         if self.git and self.link is None:
             # git repo, check it exists & isn't dirty
@@ -166,12 +184,11 @@ class Book:
 
         elif self.link and self.git is None:
             # check the link points to the correct location
-            link_target = os.readlink(self.path)
-            LOG.debug('book: {0} should point to {1}, it points to {2}'.format(self.path, self.link, link_target))
-            if link_target == self.link:
+            if self._check_link():
                 LOG.info('# book {0} correctly points to {1}'.format(self.path, self.link))
             else:
-                LOG.error('{0} should point to {1}, it points to {2}'.format(self.path, self.link, self.link))
+                link_target = os.readlink(self.path)
+                LOG.error('ERROR: {0} should point to {1}, it points to {2}'.format(self.path, self.link, link_target))
 
         else:
             LOG.error('Unknown book type: {0}'.format(self.path))

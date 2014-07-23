@@ -36,6 +36,13 @@ class BaseCommand(Command):
                             help="path to gitshelf YAML config, defaults to gitshelf.yml",
                             action='store')
 
+        parser.add_argument('--token',
+                            dest='tokens',
+                            default=None,
+                            nargs=1,
+                            help="inject a token for substituion, overrides any environment level tokens",
+                            action='append')
+
         parser.add_argument('--skip-deletes', help="skip and group/rule deletes", action="store_true")
 
         parser.add_argument('--fakeroot',
@@ -99,6 +106,20 @@ class BaseCommand(Command):
 
         tokens = config['environments'][environment]['tokens']
         LOG.debug('Tokens: {0}'.format(tokens))
+
+        # overwrite the tokens loaded from the file with any passed on the
+        # command line
+        if parsed_args.tokens:
+            LOG.debug("Tokens have been passed on the command line: {0}".format(parsed_args.tokens))
+            # split them into key/value pair, but we are passed a list of lists
+            # so cli_token[0] accessess the item we want
+            for cli_token in parsed_args.tokens:
+                LOG.debug("Parsing the command line token: {0}".format(cli_token))
+                split_token = cli_token[0].partition("=")
+                LOG.debug("Split command line token: {0}".format(split_token))
+                tokens[split_token[0]] = split_token[2]
+
+            LOG.debug('Tokens: {0}'.format(tokens))
 
         # expand out tokens, tokens are {} wrapped names from the environment section
         delimiters = ('{', '}')

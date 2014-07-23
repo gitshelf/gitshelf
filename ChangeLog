@@ -1,3 +1,16 @@
+commit b5920548d5d80c146a6ba9bf4b601b25fb2671de
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Jul 23 00:25:00 2014 +0100
+
+    Fixed a breaking change that stopped `gitshelf install` working
+    
+    * Corrected error causing "IndexError: tuple index out of range"
+    * Log both the branch & sha1 when reporting a branch mis-match
+
+ ChangeLog        | 24 ++++++++++++++++++++++++
+ gitshelf/book.py |  9 +++++----
+ 2 files changed, 29 insertions(+), 4 deletions(-)
+
 commit cabdd8a40b4031622a9d82f15904075139237826
 Author: Simon McCartney <simon.mccartney@hp.com>
 Date:   Tue Jul 22 15:51:45 2014 +0100
