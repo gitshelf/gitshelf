@@ -1,5 +1,6 @@
 *.pyc
 .venv
+*.egg
 *.egg-info
 docs/srv/
 .ropeproject/

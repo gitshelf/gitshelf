@@ -14,52 +14,9 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from setuptools import setup, find_packages
-from gitshelf.openstack.common import setup as common_setup
 
-install_requires = common_setup.parse_requirements(['tools/pip-requires'])
-tests_require = common_setup.parse_requirements(['tools/test-requires'])
-setup_require = common_setup.parse_requirements(['tools/setup-requires'])
-dependency_links = common_setup.parse_dependency_links([
-    'tools/pip-requires',
-    'tools/test-requires',
-    'tools/setup-requires'
-])
+import setuptools
 
-setup(
-    name='gitshelf',
-    version=common_setup.get_version('gitshelf'),
-    description='Manage a shelf full of git repos',
-    author='Simon McCartney',
-    author_email='simon.mccartney@hp.com',
-    url='https://github.com/gitshelf/gitshelf',
-    packages=find_packages(exclude=['bin']),
-    include_package_data=True,
-    test_suite='nose.collector',
-    setup_requires=setup_require,
-    install_requires=install_requires,
-    tests_require=tests_require,
-    extras_require={'test': tests_require},
-    dependency_links=dependency_links,
-    scripts=[
-        'bin/gitshelf',
-    ],
-    cmdclass=common_setup.get_cmdclass(),
-    entry_points={
-        'gitshelf.cli': [
-            'install = gitshelf.cli.install:GitShelfInstallCommand',
-            'status = gitshelf.cli.status:GitShelfStatusCommand',
-            'diff = gitshelf.cli.diff:GitShelfDiffCommand',
-            'pull = gitshelf.cli.diff:GitShelfPullCommand',
-            'discover = gitshelf.cli.discover:GitShelfDiscoverCommand',
-        ],
-    },
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Environment :: Console',
-    ],
-)
+setuptools.setup(
+    setup_requires=['pbr'],
+    pbr=True)

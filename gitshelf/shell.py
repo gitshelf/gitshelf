@@ -17,6 +17,7 @@ from cliff.app import App
 from cliff.commandmanager import CommandManager
 from gitshelf.version import version_info as version
 import logging
+import sys
 
 
 class GitShelfShell(App):
@@ -36,3 +37,8 @@ class GitShelfShell(App):
         parser = super(GitShelfShell, self).build_option_parser(description, version)
 
         return parser
+
+
+def main():
+    app = GitShelfShell()
+    sys.exit(app.run(sys.argv[1:]))
