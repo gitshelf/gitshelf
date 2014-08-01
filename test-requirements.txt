@@ -1,0 +1,4 @@
+testtools
+testrepository
+unittest2
+nose
