@@ -1,3 +1,18 @@
+commit be01b5c7e0bcd6300e027d1b4119c0c8fd9ddf68
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Jul 23 01:49:06 2014 +0100
+
+    Added passing tokens on the cli interface
+    
+    * tokens passed via --token override any declared in the gitshelf file
+    * `install` now corrects any links that exist but have the wrong target
+    * Fixed an issue where parent directory of a path doesn't need created
+
+ ChangeLog                | 13 +++++++++++++
+ gitshelf/book.py         | 27 ++++++++++++++++++++++-----
+ gitshelf/cli/__init__.py | 21 +++++++++++++++++++++
+ 3 files changed, 56 insertions(+), 5 deletions(-)
+
 commit b5920548d5d80c146a6ba9bf4b601b25fb2671de
 Author: Simon McCartney <simon.mccartney@hp.com>
 Date:   Wed Jul 23 00:25:00 2014 +0100

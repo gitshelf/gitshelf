@@ -18,7 +18,7 @@ gitshelf is published on pypi [here](https://pypi.python.org/pypi/gitshelf), so 
 
 You can also install from the github repo:
 
-    pip install git+http://github.com/moniker-dns/gitshelf
+    pip install git+http://github.com/gitshelf/gitshelf
 
 We use the python [sh](https://pypi.python.org/pypi/sh) sub process interface to work with git repos, so you'll need a standard git cli install, if you don't know how to do that, this might be the wrong tool for you.
 
