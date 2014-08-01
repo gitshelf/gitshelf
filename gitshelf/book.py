@@ -223,6 +223,36 @@ class Book:
         else:
             LOG.error('Unknown book type: {0}'.format(self.path))
 
+    def pull(self):
+        if self.git and self.link is None:
+            # git repo, check it exists & isn't dirty
+            if not os.path.exists(self.path):
+                LOG.info("ERROR book {0} from {1} doesn't exist.".format(
+                    self.path,
+                    self.git))
+            else:
+                # chdir to the book & run `git status`
+                cwd = os.getcwd()
+                os.chdir(self.path)
+                LOG.info("# book {0}".format(self.path))
+                git_diff = git.diff()
+                if git_diff:
+                    LOG.info("# book {0} had changes:".format(self.path))
+                    LOG.info(git_diff)
+                else:
+                    LOG.info("# book {0} is clean".format(self.path))
+                os.chdir(cwd)
+        elif self.link and self.git is None:
+            # check the link points to the correct location
+            link_target = os.readlink(self.path)
+            LOG.debug('book: {0} should point to {1}, it points to {2}'.format(self.path, self.link, link_target))
+            if link_target == self.link:
+                LOG.info('# book {0} correctly points to {1}'.format(self.path, self.link))
+            else:
+                LOG.error('{0} should point to {1}, it points to {2}'.format(self.path, self.link, self.link))
+        else:
+            LOG.error('Unknown book type: {0}'.format(self.path))
+
     @staticmethod
     def discover(rootdir='.', usebranch=False):
         """discover all the git repo's under this directory"""
