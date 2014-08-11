@@ -131,4 +131,5 @@ sure pbr doesn't break everything.
 
 build & upload to pypi in a single hit:
 
+    git tag -s v0.0.x
     python setup.py sdist upload

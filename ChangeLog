@@ -1,30 +1,220 @@
-CHANGES
-=======
+commit 7a8ebaf0439c6729080f0f53baba3f3a902ae3c3
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 12:19:01 2014 +0100
 
-* Use OpenStack's pbr for setup/install etc
-* Gitshelf has a new home!
-* Added passing tokens on the cli interface
-* Fixed a breaking change that stopped `gitshelf install` working
-* Improved the status check to check that the correct branch is set
-* Sort discovered books
-* Collected build artifacts & updated docs
-* Fix my broken understanding of python packaging
-* minor output tweak to shelf discovery
-* Documentation update
-* Added link discovery to the discover sub-command
-* Added --use-branch flag to discover
-* Crude repo discovery added
-* Move functionality to Book object
-* wip
-* wip
-* Added --skip-repo-url-check
-* WIP
-* Support token expansion from the defaults & environments sections
-* handle status checks on links better
-* Added support for symlink books
-* fixed bug when using --fakeroot with status
-* wip
-* wip
-* wip
-* first drop
-* wip
+    More doc tweaking
+
+commit 61e5a4ba1c053bbd05936f16da7be0a99ce9bf6d
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 12:12:11 2014 +0100
+
+    Keep github & sdist happy with one README
+
+commit 1f7bea7d3982e1a731fc37f44d06983d7bb5241b
+Merge: 0bbf7c6 1e4e91b
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 12:11:07 2014 +0100
+
+    Merge branch 'master' of github.com:gitshelf/gitshelf
+
+commit 0bbf7c6ab12070ba61817ed12e307e099b62e054
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 11:57:45 2014 +0100
+
+    Use OpenStack's pbr for setup/install etc
+    
+    Fixes #2
+
+commit 1e4e91b0a553ac10409031806e1f7203c0257838
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 11:57:45 2014 +0100
+
+    Use OpenStack's pbr for setup/install etc
+    
+    Fixes #1
+
+commit 53affedc32d2d15a230ad915f2290e69d6134868
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 11:15:06 2014 +0100
+
+    wip - gitshelf/pull
+
+commit 800039dc9155c9a242a363a4fbcf8ca1667a50d5
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Aug 1 11:06:55 2014 +0100
+
+    Gitshelf has a new home!
+    
+    * the very kind Douglas Campos (qmx@qmx.me) transferred
+      github.com/gitshelf to us
+    * documentation & setup updates to reflect new URLs
+
+commit be01b5c7e0bcd6300e027d1b4119c0c8fd9ddf68
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Jul 23 01:49:06 2014 +0100
+
+    Added passing tokens on the cli interface
+    
+    * tokens passed via --token override any declared in the gitshelf file
+    * `install` now corrects any links that exist but have the wrong target
+    * Fixed an issue where parent directory of a path doesn't need created
+
+commit b5920548d5d80c146a6ba9bf4b601b25fb2671de
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Jul 23 00:25:00 2014 +0100
+
+    Fixed a breaking change that stopped `gitshelf install` working
+    
+    * Corrected error causing "IndexError: tuple index out of range"
+    * Log both the branch & sha1 when reporting a branch mis-match
+
+commit cabdd8a40b4031622a9d82f15904075139237826
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jul 22 15:51:45 2014 +0100
+
+    Improved the status check to check that the correct branch is set
+    
+    * also added diff sub-command, not working correctly
+
+commit 2d8dff82cf1b2506370735da788ce4c1d7efe5a2
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 14:51:01 2014 +0100
+
+    Sort discovered books
+
+commit cd852bb1df9ee82ed8f50b64501b71c13fb62b20
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 13:49:36 2014 +0100
+
+    Collected build artifacts & updated docs
+
+commit 4d32a01e82d7202726397c313d1c5662de4ed952
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 13:09:00 2014 +0100
+
+    Fix my broken understanding of python packaging
+    
+    * shift the Book class out to gitshelf/book.py
+    * fix up required import statements
+
+commit 3dc75256578f34d05262431d2b83bc46390df693
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Jun 19 11:06:51 2014 +0100
+
+    minor output tweak to shelf discovery
+
+commit 2901a86f89113074ff8ced0d2ab945301038712f
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 12:24:02 2014 +0100
+
+    Documentation update
+
+commit e24993d710abb7f55e6ed2b0d9bb3ab50d843b74
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 11:46:47 2014 +0100
+
+    Added link discovery to the discover sub-command
+
+commit 1f440193fd5dee5e7e838a6299e8d057f4c3e823
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 10:58:18 2014 +0100
+
+    Added --use-branch flag to discover
+    
+    * sets the branch on discovered repos to the branch name, not the sha1
+
+commit 14a981a7cb42979acf7469ba414a83449fa726af
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Jun 17 00:33:53 2014 +0100
+
+    Crude repo discovery added
+
+commit 9fe853e2704bc6eefdab88278b6988032371173e
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jun 16 19:52:09 2014 +0100
+
+    Move functionality to Book object
+
+commit 8d802ae1a65850ba7f9d18c50e5dbac0e9bcb34b
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jun 9 20:22:21 2014 +0100
+
+    wip
+
+commit d92c7cd4a3eb0627d99a66d8c0caebd2f5553165
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Fri Mar 28 14:41:05 2014 +0000
+
+    wip
+
+commit 542f7cf539fe44ce77f27138b717fd5e8f8daec4
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Thu Mar 13 11:19:08 2014 +0000
+
+    Added --skip-repo-url-check
+
+commit 3c76625d4d3bc367667f964feae68fcb321af7a7
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Mar 11 12:39:19 2014 +0000
+
+    WIP
+    
+    1) added --environment to forcibly set the environment from the cli
+    2) on install, check the remote url matches the gitshelf
+
+commit 59da5a13261304d12a10b32bbc4b15c2eb79e546
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Mar 10 16:55:18 2014 +0000
+
+    Support token expansion from the defaults & environments sections
+
+commit 6fadd498c5f703b8c566fe48bee96dedfb81afe2
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Wed Feb 12 16:40:21 2014 +0000
+
+    handle status checks on links better
+
+commit b3a8a86c936801f2a0e682a7dc7ce2924ab85560
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 23:50:06 2014 +0000
+
+    Added support for symlink books
+
+commit 51acb9e72d5ced3e3c2f532b0b9927d37622fb37
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 23:07:59 2014 +0000
+
+    fixed bug when using --fakeroot with status
+
+commit 05ec0164c8d669ed8ed2de912a510bc413ac7344
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Tue Feb 11 18:14:08 2014 +0000
+
+    wip
+    
+    Shifted share cli args up to BaseCommand
+    Fixed fakeroot path correction
+
+commit 376010a304aad8cf3058bb4d9c1551fe8f4568a1
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Jan 27 14:27:03 2014 +0000
+
+    wip
+
+commit e14f32911b559aa4b78726952113b8c6632101da
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Fri Nov 8 21:31:12 2013 +0000
+
+    wip
+
+commit 791af671722c7ab1b633b330819f70dbcbb32cc4
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Fri Nov 8 19:49:04 2013 +0000
+
+    first drop
+
+commit 6ef5b2f226e5184b5c11be293cdb0153f8b1c2e2
+Author: Simon McCartney <simon@mccartney.ie>
+Date:   Wed Nov 6 16:37:28 2013 +0000
+
+    wip
