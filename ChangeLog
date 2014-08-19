@@ -1,3 +1,12 @@
+commit 1e8167cd4f0230aba7e7ba54d791e09ac3cce2f4
+Author: Simon McCartney <simon.mccartney@hp.com>
+Date:   Mon Aug 11 21:48:53 2014 +0100
+
+    Always re-calculate link targets to relative paths
+    
+    * so that fakeroot behaves as expected with absolute links
+    * so that tar'ing the results of `gitshelf install` is relocatable
+
 commit 7a8ebaf0439c6729080f0f53baba3f3a902ae3c3
 Author: Simon McCartney <simon.mccartney@hp.com>
 Date:   Fri Aug 1 12:19:01 2014 +0100

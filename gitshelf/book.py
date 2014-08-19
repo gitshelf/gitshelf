@@ -58,7 +58,7 @@ class Book:
             raise StandardError("Book is neither git or link!")
 
         # Only apply fakeroot to non-relative paths
-        if self.fakeroot is not None and self.path[0] != '.':
+        if self.fakeroot is not None and os.path.isabs(self.path):
             LOG.debug('fakepath set, prepending {0} to {1}'.format(
                 self.fakeroot, self.path))
             # need to strip any leading os.sep
@@ -66,18 +66,24 @@ class Book:
             self.path = book_path
             LOG.debug('book.path is now {0}'.format(self.path))
 
-        if self.fakeroot is not None and self.link and self.link[0] == os.sep:
+        # Update links with absolute targets to be relative so they work with
+        # fakeroot
+        if self.fakeroot is not None and self.link and os.path.isabs(self.link):
             # Update the link target to, which also means that
             # link targets must now be relative to handle relocating a
             # tarball of the gitshelf.  This is all getting a little
             # complicated.
             link_path = os.path.join(self.fakeroot, self.link.lstrip(os.sep))
             self.link = link_path
-            LOG.debug('After fakeroot, book.link is now {0}'.format(self.link))
+            LOG.debug('After applying fakeroot ({0}) to {1}\'s target, '
+                      'book.link is now {2}'.format(self.fakeroot, self.path, self.link))
 
-            # map to a relative path
-            link_relative = os.path.relpath(self.link, self.path)
-            LOG.debug('book.link ({0}), relative path: {1}'.format(self.link, link_relative))
+            # map target to a relative path, relative to self.path's parent
+            book_parent = os.path.dirname(self.path)
+            link_relative = os.path.relpath(self.link, book_parent)
+            LOG.debug('book.link target ({0}), relative to {1} is {2}'.format(self.link,
+                                                                              book_parent,
+                                                                              link_relative))
             self.link = link_relative
 
     def create(self):
