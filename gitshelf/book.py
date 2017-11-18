@@ -235,7 +235,7 @@ class Book:
                 cwd = os.getcwd()
                 os.chdir(self.path)
                 LOG.info("# book {0}".format(self.path))
-                git_diff = git.diff()
+                git_diff = git.diff(exit_code=True)
                 if git_diff:
                     LOG.info("# book {0} had changes:".format(self.path))
                     LOG.info(git_diff)
