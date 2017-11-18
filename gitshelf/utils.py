@@ -17,6 +17,7 @@
 from urlparse import urlparse, parse_qsl
 from urllib import unquote_plus
 
+
 def get_item_properties(item, fields, mixed_case_fields=[], formatters={}):
     """Return a tuple containing the item properties.
 
@@ -63,7 +64,6 @@ def get_columns(data):
     return list(columns)
 
 
-
 class Url(object):
     '''A url object that can be compared with other url orbjects
     without regard to the vagaries of encoding, escaping, and ordering
@@ -83,11 +83,13 @@ class Url(object):
     def __hash__(self):
         return hash(self.parts)
 
+
 class NestedDict(dict):
     '''Make accessing nested dictionaries less painful, return
     and empty dict for anything that doesn't exist.
     Stolen from http://ohuiginn.net/mt/2010/07/nested_dictionaries_in_python.html'''
 
     def __getitem__(self, key):
-        if key in self: return self.get(key)
+        if key in self:
+            return self.get(key)
         return self.setdefault(key, NestedDict())

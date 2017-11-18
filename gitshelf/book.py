@@ -35,7 +35,8 @@ class Book:
             branch -- branch/sha1/tag to be used in the checkout, defaults to master
             link -- destination of the link target
             skiprepourlcheck -- flag to skip that the git url matches the definition during status checks
-            fakeroot -- a gitshelf may specify absolute paths, setting fakeroot allows you to make an absolute path relative to the passed path
+            fakeroot -- a gitshelf may specify absolute paths, setting fakeroot allows you to make an
+                        absolute path relative to the passed path
 
     """
 
