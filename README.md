@@ -7,7 +7,7 @@ Using the branch parameter, you can pin a repo to a branch, sha1, tag, whatever 
 
 Also supports creating symlinks for you.
 
-
+Other similar tools include [gilt](https://github.com/metacloud/gilt) AOSP's [repo](https://code.google.com/archive/p/git-repo/)
 
 ## Install
 
